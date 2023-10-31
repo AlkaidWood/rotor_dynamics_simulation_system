@@ -61,7 +61,7 @@ if ~isempty(normalBearingIndex)
     CeN = cell(normalBearingNum,1);
 
 
-    % generat normal bearing elements
+    % generate normal bearing elements
     for iNBearing = 1:1:normalBearingNum
         % get the information of ith normal braring
         ANBearing = getStructPiece(NormalBearing,iNBearing,[]); % a normal bearing

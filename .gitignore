@@ -1,0 +1,9 @@
+# ignore all .mat files
+*.mat
+
+# ignore some folders
+meshDiagram
+modelDiagram
+modeShape
+runningStatusDiagram
+signalProcess
