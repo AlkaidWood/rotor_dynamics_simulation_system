@@ -1,9 +1,9 @@
 %% femBearing
 % generate the globe mass, stiffness, damping matrix of bearings
 %% Syntax
-% [M, K, C] = femDisk(Bearing, nodeDof)
+% [M, K, C] = femBearing(Bearing, nodeDof)
 %
-% [M, K, C, KLoose, CLoose] = femDisk(Bearing, nodeDof, LoosingBearing)
+% [M, K, C, KLoose, CLoose] = femBearing(Bearing, nodeDof, LoosingBearing)
 %% Description
 % Bearing is a struct saving the physical parameters of bearings with 
 % fields: amount, dofOfEachNodes, stiffness, damping, mass,

@@ -5,7 +5,9 @@ close all
 %% Input initial parameters
 
 InitialParameter = inputEssentialParameter();
+InitialParameter = inputBearingHertz(InitialParameter);
 InitialParameter = inputIntermediateBearing(InitialParameter);
+
 
 % If you need change some parameters, please change the data in the struct:
 % InitialParameter, then use establishModel( ) to get the different models

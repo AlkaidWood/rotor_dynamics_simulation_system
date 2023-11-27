@@ -66,13 +66,21 @@ end
 %%
 
 % typing the parameter about linear bearing
-Bearing.amount          = 3;
-Bearing.inShaftNo       = [1; 1; 2];
-Bearing.dofOfEachNodes  = [2; 2; 2]; % if mass=0, dof must be 0 
-Bearing.positionOnShaftDistance = 1e-3 * [176.5; 718.5; 343.5];
-Bearing.stiffness       = [1e8; 1e8; 1e8]; % N*m
-Bearing.damping         = [300; 300; 300]; % N*s/m
-Bearing.mass            = [3; 3; 3]; % kg
+% Bearing.amount          = 3;
+% Bearing.inShaftNo       = [1; 1; 2];
+% Bearing.dofOfEachNodes  = [2; 2; 2]; % if mass=0, dof must be 0 
+% Bearing.positionOnShaftDistance = 1e-3 * [176.5; 718.5; 343.5];
+% Bearing.stiffness       = [1e8; 1e8; 1e8]; % N*m
+% Bearing.damping         = [300; 300; 300]; % N*s/m
+% Bearing.mass            = [3; 3; 3]; % kg
+
+Bearing.amount          = 0;
+Bearing.inShaftNo       = [];
+Bearing.dofOfEachNodes  = []; % if mass=0, dof must be 0 
+Bearing.positionOnShaftDistance = [];
+Bearing.stiffness       = []; % N*m
+Bearing.damping         = []; % N*s/m
+Bearing.mass            = []; % kg
 
 checkInputData(Bearing)
 
@@ -83,6 +91,8 @@ ComponentSwitch.hasIntermediateBearing = false;
 ComponentSwitch.hasLoosingBearing = false;
 ComponentSwitch.hasRubImpact = false;
 ComponentSwitch.hasCouplingMisalignment = false;
+ComponentSwitch.BearingH = false;
+ComponentSwitch.IntermediateBeaingH = false;
 
 %%
 

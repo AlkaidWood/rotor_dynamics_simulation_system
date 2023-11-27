@@ -1,5 +1,6 @@
 # ignore all .mat files
 *.mat
+*.asv
 
 # ignore some folders
 meshDiagram
