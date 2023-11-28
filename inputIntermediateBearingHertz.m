@@ -24,6 +24,9 @@ IntermediateBearingH.amount          = 1;
 IntermediateBearingH.betweenShaftNo  = [2 1]; % n*2
 % the same bearing in row; different bearings in column, n*2
 IntermediateBearingH.positionOnShaftDistance = 1e-3 * [0 258];
+% M K C, elements in the same row: the MKC at the same position of the
+% shaft; mass(1,1) -> mass(1,n): the mass near the outer shaft -> the mass 
+% near the inner shaft
 IntermediateBearingH.stiffness       = [1e9]; % N/m, in column, n*1
 IntermediateBearingH.damping         = [300]; % N/s^2, in column, n*1
 IntermediateBearingH.mass            = [3]; % kg

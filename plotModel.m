@@ -19,24 +19,24 @@ Bearing = InitialParameter.Bearing;
 %calculate the offset of each shafts due to the intermediate bearing
 offsetPosition = zeros(Shaft.amount,1);
 if isfield(InitialParameter,'IntermediateBearing')
-InterBearing = InitialParameter.IntermediateBearing; % short the variable
-for iShaft = 1:1:Shaft.amount
-if iShaft ==1
-    offsetPosition(1) = 0; % position of shaft 1 is reference
-else
-    for iInterBearing = 1:1:InterBearing.amount
-        if InterBearing.betweenShaftNo(iInterBearing,2) == iShaft
-           basicShaftD = InterBearing.positionOnShaftDistance(iInterBearing, 1);
-           laterShaftD = InterBearing.positionOnShaftDistance(iInterBearing, 2);
-           basicShaftNo = InterBearing.betweenShaftNo(iInterBearing,1);
-           offsetPosition(iShaft) = basicShaftD - laterShaftD...
-                                    + offsetPosition(basicShaftNo);
+    InterBearing = InitialParameter.IntermediateBearing; % short the variable
+    for iShaft = 1:1:Shaft.amount
+        if iShaft ==1
+            offsetPosition(1) = 0; % position of shaft 1 is reference
         else
-           offsetPosition(iShaft) = 0;
-        end % if InterBearing.betweenShaftNo(iInterBearing,2) == iShaft
-    end % for iInterBearing = 1:1:InterBearing.amount
-end % if iShaft ==1
-end % for iShaft = 1:1:Shaft.amount 
+            for iInterBearing = 1:1:InterBearing.amount
+                if InterBearing.betweenShaftNo(iInterBearing,2) == iShaft
+                   basicShaftD = InterBearing.positionOnShaftDistance(iInterBearing, 1);
+                   laterShaftD = InterBearing.positionOnShaftDistance(iInterBearing, 2);
+                   basicShaftNo = InterBearing.betweenShaftNo(iInterBearing,1);
+                   offsetPosition(iShaft) = basicShaftD - laterShaftD...
+                                            + offsetPosition(basicShaftNo);
+                else
+                   offsetPosition(iShaft) = 0;
+                end % if InterBearing.betweenShaftNo(iInterBearing,2) == iShaft
+            end % for iInterBearing = 1:1:InterBearing.amount
+        end % if iShaft ==1
+    end % for iShaft = 1:1:Shaft.amount 
 end % if isfiled(InitialParameter,'IntermediateBearing')
 
 %%

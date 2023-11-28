@@ -20,12 +20,18 @@ BearingH.amount          = 3;
 BearingH.inShaftNo       = [1; 1; 2];
 BearingH.dofOfEachNodes  = [2; 2; 2]; % if mass=0, dof must be 0 
 BearingH.positionOnShaftDistance = 1e-3 * [176.5; 718.5; 343.5];
-BearingH.stiffnessSupport       = [1e8; 1e8; 1e8]; % N*m
-BearingH.dampingSupport         = [300; 300; 300]; % N*s/m
-BearingH.massPedestal           = [3; 3; 2.5]; % kg
-BearingH.stiffnessRoller = [2.5e7; 2.5e7; 2.5e7]; % N*m
-BearingH.dampingRoller = [150; 150; 150]; % N*s/m
-BearingH.massOuterRace = [0.11; 0.11; 0.78]; % kg
+% M K C, elements in the same row: the MKC at the same position of the
+% shaft; mass(1,1) -> mass(1,n): the mass near the basement of bearing ->
+% the mass near the shaft the bearing connecting
+BearingH.stiffness       = [1e8, 2.5e7;...
+                            1e8, 2.5e7;...
+                            1e8, 2.5e7]; % N*m
+BearingH.damping         = [300, 150;...
+                            300, 150;...
+                            300, 150]; % N*s/m
+BearingH.mass            = [3, 0.11;...
+                            3, 0.11;...
+                            2.5, 0.78]; % kg
 BearingH.rollerNum = [8; 8; 10];
 BearingH.radiusInnerRace = [28.8e-3; 28.8e-3; 75.5e-3]; % m
 BearingH.radiusOuterRace = [47e-3; 47e-3; 110e-3]; % m
