@@ -24,6 +24,7 @@ IntermediateBearingH.amount          = 1;
 IntermediateBearingH.betweenShaftNo  = [2 1]; % n*2
 % the same bearing in row; different bearings in column, n*2
 IntermediateBearingH.positionOnShaftDistance = 1e-3 * [0 258];
+IntermediateBearingH.isHertzian      = [true]; % boolean
 % M K C, elements in the same row: the MKC at the same position of the
 % shaft; mass(1,1) -> mass(1,n): the mass near the outer shaft -> the mass 
 % near the inner shaft
@@ -80,8 +81,8 @@ IntermediateBearingH.damping = damping;
 %%
 
 OutputParameter = InputParameter;
-OutputParameter.IntermediateBearingH = IntermediateBearingH;
-OutputParameter.ComponentSwitch.hasIntermediateBearingH = true;
+OutputParameter.IntermediateBearing = IntermediateBearingH;
+OutputParameter.ComponentSwitch.hasIntermediateBearing = true;
 end % for function inputIntermediateBearingHertz()
 
 

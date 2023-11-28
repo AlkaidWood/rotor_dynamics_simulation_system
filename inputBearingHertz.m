@@ -20,6 +20,7 @@ BearingH.amount          = 3;
 BearingH.inShaftNo       = [1; 1; 2];
 BearingH.dofOfEachNodes  = [2; 2; 2]; % if mass=0, dof must be 0 
 BearingH.positionOnShaftDistance = 1e-3 * [176.5; 718.5; 343.5];
+BearingH.isHertzian      = [true; true; true]; % boolean
 % M K C, elements in the same row: the MKC at the same position of the
 % shaft; mass(1,1) -> mass(1,n): the mass near the basement of bearing ->
 % the mass near the shaft the bearing connecting
@@ -43,5 +44,5 @@ checkInputData(BearingH)
 
 % Outpt initialParameter
 Parameter = InitialParameter;
-Parameter.BearingH = BearingH; 
+Parameter.Bearing = BearingH; 
 end

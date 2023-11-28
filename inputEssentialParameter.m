@@ -91,8 +91,8 @@ ComponentSwitch.hasIntermediateBearing = false;
 ComponentSwitch.hasLoosingBearing = false;
 ComponentSwitch.hasRubImpact = false;
 ComponentSwitch.hasCouplingMisalignment = false;
-ComponentSwitch.BearingH = false;
-ComponentSwitch.IntermediateBeaingH = false;
+% ComponentSwitch.BearingH = false;
+% ComponentSwitch.IntermediateBeaingH = false;
 
 %%
 
