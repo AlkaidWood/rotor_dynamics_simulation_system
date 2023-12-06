@@ -305,33 +305,15 @@ end
 
 % Node.isBearing and Bearing.positionNode
 % generater bearing nodes
-indexHasMass = find(Bearing.mass ~= 0);
-bearingNodeNum = length(indexHasMass);
-Bearing.positionNode = zeros(Bearing.amount,1); % initial
-for iBearingNode = 1:1:bearingNodeNum
-    newNodeNo = nodeNum + iBearingNode;
-    onNodeNo = Bearing.positionOnShaftNode(indexHasMass(iBearingNode));
-    % copy information in Node
-    Node(newNodeNo).onShaftNo = Node(onNodeNo).onShaftNo;
-    Node(newNodeNo).onShaftDistance = Node(onNodeNo).onShaftDistance;
-    Node(newNodeNo).bearingNo = Node(onNodeNo).bearingNo;
-    if hasLoosingBearing
-        Node(newNodeNo).isLoosingBearing = Node(onNodeNo).isLoosingBearing;
-    end
-    % write new information in Node
-    Node(newNodeNo).name = newNodeNo; 
-    Node(newNodeNo).isBearing = true;
-    Node(newNodeNo).dof = Bearing.dofOfEachNodes(indexHasMass(iBearingNode));
-    % Bearing.positionNode
-    Bearing.positionNode( indexHasMass(iBearingNode) ) = newNodeNo;
-end
+isInter = false;
+[nodeNum, Bearing, Node] = addNode(nodeNum, Bearing, Node, hasLoosingBearing, false);
 
-for iNode = 1:1:nodeNum
-    if isempty(Node(iNode).isBearing)
-        Node(iNode).isBearing = false;
-    end
-end
-nodeNum = nodeNum + bearingNodeNum;
+%%
+
+% Node.isInterBearing and InterBearing.positionNode
+% generater bearing nodes
+isInter = true;
+[nodeNum, InterBearing, Node] = addNode(nodeNum, InterBearing, Node, hasLoosingBearing, isInter);
 
 %%
 
@@ -497,4 +479,48 @@ end % end if
 
 end % end sub function judgeShaftEnd()
 
+%%
+
+% subfunction 3
+% add Node.isInterBearing and InterBearing.positionNode, Node.isBearing and
+% Bearing.positionNode for Bearing and InterBearing
+function [nodeNum, Element, Node] = addNode(nodeNum, Element, Node, hasLoosingBearing, isInter)
+indexHasMass = find(Element.mass' ~= 0); % index in 1-d
+[indexHasMassRow, indexHasMassCol] = find(Element.mass' ~= 0); % index in 2-d
+bearingNodeNum = length(indexHasMass);
+bearingMassColumnNum = size(Element.mass,2);
+Element.positionNode = zeros(Element.amount,bearingMassColumnNum); % initial
+for iBearingNode = 1:1:bearingNodeNum
+    newNodeNo = nodeNum + iBearingNode;
+    onNodeNo = Element.positionOnShaftNode(indexHasMassCol(iBearingNode),:);
+    % copy information in Node
+    Node(newNodeNo).onShaftNo = [Node(onNodeNo).onShaftNo];
+    Node(newNodeNo).onShaftDistance = [Node(onNodeNo).onShaftDistance];
+    
+    if isInter
+        Node(newNodeNo).interBearingNo = unique([Node(onNodeNo).interBearingNo]);
+    else
+        Node(newNodeNo).bearingNo = Node(onNodeNo).bearingNo;
+    end
+    
+    if hasLoosingBearing
+        Node(newNodeNo).isLoosingBearing = Node(onNodeNo).isLoosingBearing;
+    end
+    % write new information in Node
+    Node(newNodeNo).name = newNodeNo; 
+    Node(newNodeNo).dof = Element.dofOfEachNodes(indexHasMassCol(iBearingNode),indexHasMassRow(iBearingNode));
+    Node(newNodeNo).isBearing = true;
+    % Element.positionNode
+    Element.positionNode(indexHasMassCol(iBearingNode),indexHasMassRow(iBearingNode)) = newNodeNo;
+end
+
+
+for iNodee = 1:1:nodeNum
+    if isempty(Node(iNodee).isBearing)
+        Node(iNodee).isBearing = false;
+    end
+end
+nodeNum = nodeNum + bearingNodeNum;
+    
+end
 end % end main function
