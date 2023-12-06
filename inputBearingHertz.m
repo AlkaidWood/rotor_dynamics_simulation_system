@@ -18,7 +18,7 @@ function Parameter = inputBearingHertz(InitialParameter)
 % rollers and races
 BearingH.amount          = 3;
 BearingH.inShaftNo       = [1; 1; 2];
-BearingH.dofOfEachNodes  = [2; 2; 2]; % if mass=0, dof must be 0 
+BearingH.dofOfEachNodes  = [2,2; 2,2; 2,2]; % if mass=0, dof must be 0 
 BearingH.positionOnShaftDistance = 1e-3 * [176.5; 718.5; 343.5];
 BearingH.isHertzian      = [true; true; true]; % boolean
 % M K C, elements in the same row: the MKC at the same position of the

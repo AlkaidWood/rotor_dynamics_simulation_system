@@ -54,7 +54,7 @@ end
 %%
 
 % mesh
-Parameter = meshModel(InitialParameter,NameValueArgs.gridFineness);% choose: low, middle, high 
+Parameter = meshModel(InitialParameter,NameValueArgs.gridFineness); % choose: low, middle, high 
 if NameValueArgs.isPlotMesh
 	plotMesh(Parameter); % plot mesh result
 end

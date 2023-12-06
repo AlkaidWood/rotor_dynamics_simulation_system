@@ -22,6 +22,8 @@ function OutputParameter = inputIntermediateBearingHertz(InputParameter)
 IntermediateBearingH.amount          = 1;
 % shaft no. connected by same bearing in row; different bearings in column
 IntermediateBearingH.betweenShaftNo  = [2 1]; % n*2
+% dof
+IntermediateBearingH.dofOfEachNodes = [2];% if mass=0, dof must be 0 
 % the same bearing in row; different bearings in column, n*2
 IntermediateBearingH.positionOnShaftDistance = 1e-3 * [0 258];
 IntermediateBearingH.isHertzian      = [true]; % boolean
