@@ -28,8 +28,8 @@ IntermediateBearingH.dofOfEachNodes = [2];% if mass=0, dof must be 0
 IntermediateBearingH.positionOnShaftDistance = 1e-3 * [0 258];
 IntermediateBearingH.isHertzian      = [true]; % boolean
 % M K C, elements in the same row: the MKC at the same position of the
-% shaft; mass(1,1) -> mass(1,n): the mass near the outer shaft -> the mass 
-% near the inner shaft
+% shaft; mass(1,1) -> mass(1,n): 
+% the mass near the inner shaft -》the mass near the outer shaft
 IntermediateBearingH.stiffness       = [1e9]; % N/m, in column, n*1
 IntermediateBearingH.damping         = [300]; % N/s^2, in column, n*1
 IntermediateBearingH.mass            = [3]; % kg
