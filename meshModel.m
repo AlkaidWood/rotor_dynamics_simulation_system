@@ -306,7 +306,7 @@ end
 % Node.isBearing and Bearing.positionNode
 % generater bearing nodes
 isInter = false;
-[nodeNum, Bearing, Node] = addNode(nodeNum, Bearing, Node, hasLoosingBearing, false);
+[nodeNum, Bearing, Node] = addNode(nodeNum, Bearing, Node, hasLoosingBearing, isInter);
 
 %%
 

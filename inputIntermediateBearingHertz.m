@@ -69,17 +69,11 @@ for iBearing = 1:1:IntermediateBearingH.amount
        position(iBearing,2) = temporary;
     end
 end
-
-% sort other parameters with the shaftNo (sort row)
-[shaftNo,index] = sortrows(shaftNo,1);
-position = position(index,:);
-stiffness = IntermediateBearingH.stiffness(index,:);
-damping = IntermediateBearingH.damping(index,:);
-
 IntermediateBearingH.betweenShaftNo = shaftNo;
 IntermediateBearingH.positionOnShaftDistance = position;
-IntermediateBearingH.stiffness = stiffness;
-IntermediateBearingH.damping = damping;
+% sort columns in struct
+IntermediateBearingH = sortRowsWithShaftDis(IntermediateBearingH);
+
 %%
 
 OutputParameter = InputParameter;

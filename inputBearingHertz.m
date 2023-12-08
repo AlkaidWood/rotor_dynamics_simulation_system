@@ -16,32 +16,58 @@
 function Parameter = inputBearingHertz(InitialParameter)
 % typing the parameters about bearing considering the Hertz contact between
 % rollers and races
-BearingH.amount          = 3;
-BearingH.inShaftNo       = [1; 1; 2];
-BearingH.dofOfEachNodes  = [2,2; 2,2; 2,2]; % if mass=0, dof must be 0 
-BearingH.positionOnShaftDistance = 1e-3 * [176.5; 718.5; 343.5];
-BearingH.isHertzian      = [true; true; true]; % boolean
+BearingH.amount          = 6;
+BearingH.inShaftNo       = [1; 1; 2; 1; 1; 2];
+BearingH.dofOfEachNodes  = [2,2; 2,2; 2,2; 0,0; 2,2; 0,0]; % if mass=0, dof must be 0 
+BearingH.positionOnShaftDistance = 1e-3 * [176.5; 718.5; 343.5; 0; 850; 150];
+BearingH.isHertzian      = [true; true; true; true; false; false]; % boolean
 % M K C, elements in the same row: the MKC at the same position of the
 % shaft; mass(1,1) -> mass(1,n):
 % the mass near the shaft the bearing connecting ->
-% the mass near the basement of bearing
-BearingH.stiffness       = [2.5e7, 1e8;...
-                            2.5e7, 1e8;...
-                            2.5e7, 1e8]; % N*m
-BearingH.damping         = [150, 300;...
-                            150, 300;...
-                            150, 300]; % N*s/m
+% the mass near the basement of bearing.
+%
+% If isHertizian and no mass, the corresponding k c will be added in
+% global matrix normally; the model:
+% shaft--Hertz+k1c1--basement;
+% If is no Hertzian and with mass: there are n mass in a row, and n+1 k c 
+% for a bearing; the model will be established as:
+% shaft--k1c1--m1--k2c2--m2--k3c3--m3--k4c4- ...-mn--k(n+1)c(n+1)--basement;
+% If is no Hertzian and no mass, the k c will be added in global 
+% matrix normally; the model:
+% shaft--k1c1--basement;
+% If isHertzian and with mass, the hertzian force will be added at the mass
+% in the first column (near the shaft); the model:
+% shaft--Hertz--m1--k1c1--m2--k2c2--m3--k3c3- ...-mn--kncn--basement;
+
+BearingH.stiffness       = [2.5e7, 1e8, 0;...
+                            2.5e7, 1e8, 0;...
+                            2.5e7, 1e8, 0;...
+                            1e6,   0,   0;...
+                            1e6,   1.1e6, 1.2e6;...
+                            1e6,   0,   0]; % N*m
+BearingH.damping         = [150, 300, 0;...
+                            150, 300, 0;...
+                            150, 300, 0;...
+                            20,  0,   0;...
+                            20,  10,  5;...
+                            20,  0,   0]; % N*s/m
 BearingH.mass            = [0.11, 3;...
                             0.11, 3;...
-                            0.78, 2.5]; % kg
-BearingH.rollerNum = [8; 8; 10];
-BearingH.radiusInnerRace = [28.8e-3; 28.8e-3; 75.5e-3]; % m
-BearingH.radiusOuterRace = [47e-3; 47e-3; 110e-3]; % m
-BearingH.clearance = [10e-6; 10e-6; 14e-6]; % m
-BearingH.contactStiffness = [1.08e10; 1.08e10; 1.49e10]; % N*m^-3/2
-BearingH.coefficient = [3/2; 3/2; 3/2]; % =3/2 in a ball bearing; = 10/9 in a roller bearing
+                            0.78, 2.5;...
+                            0,    0;...
+                            0.05, 0.05;...
+                            0,    0]; % kg
+BearingH.rollerNum = [8; 8; 10; 8; 0; 0];
+BearingH.radiusInnerRace = [28.8e-3; 28.8e-3; 75.5e-3; 28.8e-3; 0; 0]; % m
+BearingH.radiusOuterRace = [47e-3; 47e-3; 110e-3; 47e-3; 0; 0]; % m
+BearingH.clearance = [10e-6; 10e-6; 14e-6; 10e-6; 0; 0]; % m
+BearingH.contactStiffness = [1.08e10; 1.08e10; 1.49e10; 1.08e10; 0; 0]; % N*m^-3/2
+BearingH.coefficient = [3/2; 3/2; 3/2; 3/2; 0; 0]; % =3/2 in a ball bearing; = 10/9 in a roller bearing
 
+% check input data
 checkInputData(BearingH)
+% order the column in struct with shaft no and distance on the shaft
+BearingH = sortRowsWithShaftDis(BearingH);
 
 % Outpt initialParameter
 Parameter = InitialParameter;

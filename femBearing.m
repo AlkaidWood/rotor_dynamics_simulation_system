@@ -1,5 +1,5 @@
 %% femBearing
-% generate the globe mass, stiffness, damping matrix of bearings
+% generate the global mass, stiffness, damping matrix of bearings
 %% Syntax
 % [M, K, C] = femBearing(Bearing, nodeDof)
 %
