@@ -47,8 +47,9 @@ end
 %%
 
 % distinguish the normal bearing elements from all bearing elements
-normalBearingIndex = find(Bearing.mass == 0);
-massBearingIndex   = find(Bearing.mass ~= 0);
+bearingMassSum = sum(Bearing.mass,2);
+normalBearingIndex = find(bearingMassSum == 0);
+massBearingIndex   = find(bearingMassSum ~= 0);
 Temporary          = rmfield(Bearing,'amount');
 
 %% 
@@ -56,7 +57,15 @@ Temporary          = rmfield(Bearing,'amount');
 % normal bearing (no mass)
 if ~isempty(normalBearingIndex)
     NormalBearing    = getStructPiece(Temporary,normalBearingIndex,[]);
-    normalBearingNum = length(NormalBearing.stiffness);
+    % check the number of input k and c 
+    countk = sum(NormalBearing.stiffness ~= 0, 2);
+    countc = sum(NormalBearing.damping ~= 0, 2);
+    count = [countk; countc];
+    if sum(count) ~= length(count)
+        error('Too much stiffness or damping for a no mass bearing, please input one stiffness and damping for a no mass bearing.')  
+    end
+    % initial Ke Ce for normal bearing
+    normalBearingNum = size(NormalBearing.stiffness,1);
     KeN = cell(normalBearingNum,1); 
     CeN = cell(normalBearingNum,1);
 
@@ -112,7 +121,7 @@ if ~isempty(massBearingIndex)
     
     
     % find the index of element in global matrix
-    position = [MassBearing.positionOnShaftNode, MassBearing.positionNode];
+    position = [MassBearing.positionOnShaftNode, MassBearing.positionNode(:,1)];
     mBearingIndex = findIndex(position,nodeDof); 
     
     

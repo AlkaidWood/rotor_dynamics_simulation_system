@@ -27,7 +27,7 @@ fieldNum = length(checkData);
 dimension = zeros(fieldNum,1);
 
 for iData =1:1:fieldNum
-    dimension(iData) = length( checkData{iData} );
+    dimension(iData) = size( checkData{iData}, 1);
 end
 
 isDimensionEqual = length(unique(dimension)) == 1;

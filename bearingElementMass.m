@@ -18,55 +18,146 @@
 
 function [Me, Ke, Ce] = bearingElementMass(AMBearing)
 
+%% initial
 % constants
+m = AMBearing.mass;
 k = AMBearing.stiffness;
 c = AMBearing.damping;
-m = AMBearing.mass;
 dofShaft = AMBearing.dofOnShaftNode;
 dofBearing = AMBearing.dofOfEachNodes;
+m = m(m~=0); % get the non-zero mass
+massNum = length(m);
+if length(AMBearing.mass)~=massNum
+    k = k(1:massNum+1);
+    c = c(1:massNum+1); 
+    dofBearing = dofBearing(1:massNum);% get first n+1 sitffness and damping, n is the number of the non-zero mass of bearings
+end
+dofElement = [dofShaft, dofBearing];
+dofNum = sum(dofElement);
+dofBearingNum = sum(dofBearing);
 
-%%
+% initial
+K = zeros(dofNum, dofNum);
+C = zeros(dofNum, dofNum);
 
+
+%% add part of the shaft (stiffness and damping)
 % stiffness matrix
-Kin = [ k, 0;...
-        0, k ];
- 
-K11 = zeros(dofShaft);      K12 = zeros(dofShaft, dofBearing);
-K21 = K12';                 K22 = zeros(dofBearing);
-
-K11 = addElementIn(K11,Kin,[1,1]);  K12 = addElementIn(K12,-Kin,[1,1]);
-K21 = addElementIn(K21,-Kin,[1,1]); K22 = addElementIn(K22,2*Kin,[1,1]);
-
-Ke = {K11, K12;...
-      K21, K22 };
-
-%%
+Kin = [ k(1), 0;...
+        0, k(1) ];
+K = addElementIn(K, Kin, [1,1]);
+K = addElementIn(K, -Kin, [1,dofShaft+1]);
 
 % damping matrix
-Cin = [ c, 0;...
-        0, c ];
- 
-C11 = zeros(dofShaft);      C12 = zeros(dofShaft, dofBearing);
-C21 = C12';                 C22 = zeros(dofBearing);
+Cin = [ c(1), 0;...
+        0, c(1) ];
+C = addElementIn(C, Cin, [1,1]);
+C = addElementIn(C, -Cin, [1,dofShaft+1]);
 
-C11 = addElementIn(C11,Cin,[1,1]);  C12 = addElementIn(C12,-Cin,[1,1]);
-C21 = addElementIn(C21,-Cin,[1,1]); C22 = addElementIn(C22,2*Cin,[1,1]);
 
-Ce = {C11, C12;...
-      C21, C22 };
+%% add part of the mass bearing (stiffness and damping)
 
-%%
+for im = 1:1:massNum
+    isLast = im==massNum; % boolean, last element
+    isFirst = im==1;
+    if isLast&&isFirst 
+        [Kn, Cn] = mn(k(1),k(2),c(1),c(2),dofShaft,dofBearing);
+        K = addElementIn(K, Kn, [1,1]);
+        C = addElementIn(C, Cn, [1,1]);
+    elseif isFirst&&~isLast
+        [Kj, Cj] = mj(k(1),k(2),c(1),c(2),dofShaft,dofBearing(1),dofBearing(2));
+        K = addElementIn(K, Kj, [1,1]);
+        C = addElementIn(C, Cj, [1,1]);
+    elseif isLast&&~isFirst
+        [Kn, Cn] = mn(k(end-1),k(end),c(end-1),c(end),dofBearing(end-1),dofBearing(end));
+        dofHere = sum(dofElement(1:end-2))+1;
+        K = addElementIn(K, Kn, [dofHere,dofHere]);
+        C = addElementIn(C, Cn, [dofHere,dofHere]);
+    else
+        [Kj, Cj] = mj(k(im),k(im+1),c(im),c(im+1),dofBearing(im-1),dofBearing(im),dofBearing(im+1));
+        dofHere = sum(dofElement(1:im-1))+1;
+        K = addElementIn(K, Kj, [dofHere,dofHere]);
+        C = addElementIn(C, Cj, [dofHere,dofHere]);
+    end % end if
+end % end for im
 
-% mass matrix
-Min = [ m, 0;...
-        0, m ];
- 
-M11 = zeros(dofShaft);      M12 = zeros(dofShaft, dofBearing);
-M21 = M12';                 M22 = zeros(dofBearing);
+
+%% divide into 4 sub-matrix (stiffness and damping)
+
+Ke = mat2cell(K, [dofShaft, dofBearingNum], [dofShaft, dofBearingNum]);
+Ce = mat2cell(C, [dofShaft, dofBearingNum], [dofShaft, dofBearingNum]);
+
+
+%% mass
+
+Min = zeros(sum(dofBearingNum));
+for im = 1:1:massNum
+    Mi = [ m(im), 0;...
+            0,     m(im)];
+    dofHere = sum(dofBearing(1:im-1))+1;
+    Min = addElementIn(Min, Mi, [dofHere, dofHere]);
+end
+
+M11 = zeros(dofShaft);      M12 = zeros(dofShaft, dofBearingNum);
+M21 = M12';                 M22 = zeros(dofBearingNum);
 
 M22 = addElementIn(M22, Min, [1,1]);
 
+% output
 Me = {M11, M12;...
       M21, M22 };
   
+  
+%% sub-function
+    
+    % sub-function 1
+    function [Kn, Cn] = mn(kn,kn1,cn,cn1,dof1,dof2)
+        dofNum1 = dof1+dof2;
+        % initial
+        Kn = zeros(dofNum1);
+        Cn = zeros(dofNum1);
+        % construct 
+        Kn1 = [-kn, 0;...
+               0,   -kn];
+        Kn2 = [kn+kn1, 0;...
+               0,      kn+kn1];
+        Cn1 = [-cn, 0;...
+               0,   -cn];
+        Cn2 = [cn+cn1, 0;...
+               0,      cn+cn1];
+        % assembly
+        Kn = addElementIn(Kn, Kn1, [dof1+1, 1]);
+        Kn = addElementIn(Kn, Kn2, [dof1+1, dof1+1]);
+        Cn = addElementIn(Cn, Cn1, [dof1+1, 1]);
+        Cn = addElementIn(Cn, Cn2, [dof1+1, dof1+1]);
+    end
+
+
+    % sub-function 2
+    function [Kj, Cj] = mj(kj,kj1,cj,cj1,dof1,dof2,dof3)
+        dofNum1 = dof1 + dof2 + dof3;
+        % initial
+        Kj = zeros(dofNum1);
+        Cj = zeros(dofNum1);
+        % construct
+        Kj1 = [-kj, 0;...
+               0,   -kj];
+        Kj2 = [kj+kj1, 0;...
+               0,      kj+kj1];
+        Kj3 = [-kj1, 0;...
+               0,   -kj1];  
+        Cj1 = [-cj, 0;...
+               0,   -cj];
+        Cj2 = [cj+cj1, 0;...
+               0,      cj+cj1];
+        Cj3 = [-cj1, 0;...
+               0,   -cj1];
+        % assembly
+        Kj = addElementIn(Kj, Kj1, [dof1+1, 1]);
+        Kj = addElementIn(Kj, Kj2, [dof1+1, dof1+1]);
+        Kj = addElementIn(Kj, Kj3, [dof1+1, dof1+dof2+1]);
+        Cj = addElementIn(Cj, Cj1, [dof1+1, 1]);
+        Cj = addElementIn(Cj, Cj2, [dof1+1, dof1+1]);
+        Cj = addElementIn(Cj, Cj3, [dof1+1, dof1+dof2+1]);
+    end
 end  
