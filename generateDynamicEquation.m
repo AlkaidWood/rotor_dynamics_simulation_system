@@ -251,7 +251,13 @@ fprintf(dq,'%s\n', processQ);
 %%
 
 % Hertzian contact force
-% hasHertzian
+if Parameter.ComponentSwitch.hasHertzianForce
+    if Parameter.ComponentSwitch.hasIntermediateBearing
+        generateHertzianForce();
+    else
+        generateHertzianForce(Parameter.Bearing, Parameter.Mesh);
+    end
+end
 
 %%
 

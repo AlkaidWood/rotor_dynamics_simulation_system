@@ -16,11 +16,11 @@
 function Parameter = inputBearingHertz(InitialParameter)
 % typing the parameters about bearing considering the Hertz contact between
 % rollers and races
-BearingH.amount          = 6;
-BearingH.inShaftNo       = [1; 1; 2; 1; 1; 2];
-BearingH.dofOfEachNodes  = [2,2,0; 2,2,0; 2,2,0; 0,0,0; 2,2,2; 0,0,0]; % if mass=0, dof must be 0 
-BearingH.positionOnShaftDistance = 1e-3 * [176.5; 718.5; 343.5; 0; 850; 150];
-BearingH.isHertzian      = [true; true; true; true; false; false]; % boolean
+Bearing.amount          = 6;
+Bearing.inShaftNo       = [1; 1; 2; 1; 1; 2];
+Bearing.dofOfEachNodes  = [2,2,0; 2,2,0; 2,2,0; 0,0,0; 2,2,2; 0,0,0]; % if mass=0, dof must be 0 
+Bearing.positionOnShaftDistance = 1e-3 * [176.5; 718.5; 343.5; 0; 850; 150];
+Bearing.isHertzian      = [true; true; true; true; false; false]; % boolean
 % M K C, elements in the same row: the MKC at the same position of the
 % shaft; mass(1,1) -> mass(1,n):
 % the mass near the shaft the bearing connecting ->
@@ -39,13 +39,13 @@ BearingH.isHertzian      = [true; true; true; true; false; false]; % boolean
 % in the first column (near the shaft); the model:
 % shaft--Hertz+k1c1--m1--k2c2--m2--k3c3--m3--k4c4- ...-mn--k(n+1)c(n+1)--basement;
 
-BearingH.stiffness       = [0,  2.5e7,  1e8, 0;...
+Bearing.stiffness       = [0,  2.5e7,  1e8, 0;...
                             0,  2.5e7,  1e8, 0;...
                             0,  2.5e7,  1e8, 0;...
                             1e6,    0,    0, 0;...
                             1e6,1.1e6,1.2e6, 1e6;...
                             1e6,    0,    0, 0]; % N*m
-BearingH.damping         = [0, 150, 300, 0;...
+Bearing.damping         = [0, 150, 300, 0;...
                             0, 150, 300, 0;...
                             0, 150, 300, 0;...
                             20,  0,   0, 0;...
@@ -53,25 +53,28 @@ BearingH.damping         = [0, 150, 300, 0;...
                             20,  0,   0, 0]; % N*s/m
 % the first n mass in each row must be non-zero, n is the number of mass
 % of bearings
-BearingH.mass            = [0.11, 3,    0;...
+Bearing.mass            = [0.11, 3,    0;...
                             0.11, 3,    0;...
                             0.78, 2.5,  0;...
                             0,    0,    0;...
                             0.05, 0.05, 0.1;...
                             0,    0,    0]; % kg
-BearingH.rollerNum = [8; 8; 10; 8; 0; 0];
-BearingH.radiusInnerRace = [28.8e-3; 28.8e-3; 75.5e-3; 28.8e-3; 0; 0]; % m
-BearingH.radiusOuterRace = [47e-3; 47e-3; 110e-3; 47e-3; 0; 0]; % m
-BearingH.clearance = [10e-6; 10e-6; 14e-6; 10e-6; 0; 0]; % m
-BearingH.contactStiffness = [1.08e10; 1.08e10; 1.49e10; 1.08e10; 0; 0]; % N*m^-3/2
-BearingH.coefficient = [3/2; 3/2; 3/2; 3/2; 0; 0]; % =3/2 in a ball bearing; = 10/9 in a roller bearing
+Bearing.rollerNum = [8; 8; 10; 8; 0; 0];
+Bearing.radiusInnerRace = [28.8e-3; 28.8e-3; 75.5e-3; 28.8e-3; 0; 0]; % m
+Bearing.radiusOuterRace = [47e-3; 47e-3; 110e-3; 47e-3; 0; 0]; % m
+Bearing.clearance = [10e-6; 10e-6; 14e-6; 10e-6; 0; 0]; % m
+Bearing.contactStiffness = [1.08e10; 1.08e10; 1.49e10; 1.08e10; 0; 0]; % N*m^-3/2
+Bearing.coefficient = [3/2; 3/2; 3/2; 3/2; 0; 0]; % =3/2 in a ball bearing; = 10/9 in a roller bearing
 
 % check input data
-checkInputData(BearingH)
+checkInputData(Bearing)
 % order the column in struct with shaft no and distance on the shaft
-BearingH = sortRowsWithShaftDis(BearingH);
+Bearing = sortRowsWithShaftDis(Bearing);
 
 % Outpt initialParameter
 Parameter = InitialParameter;
-Parameter.Bearing = BearingH; 
+Parameter.Bearing = Bearing;
+if sum(Bearing.isHertzian)~=0
+    Parameter.ComponentSwitch.hasHertzianForce = true;
+end % end if
 end

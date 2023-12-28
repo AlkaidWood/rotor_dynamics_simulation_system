@@ -6,7 +6,7 @@ close all
 
 InitialParameter = inputEssentialParameter(); % first, input essential parameters
 InitialParameter = inputBearingHertz(InitialParameter);
-InitialParameter = inputIntermediateBearingHertz(InitialParameter);
+InitialParameter = inputIntermediateBearing(InitialParameter);
 
 
 % If you need change some parameters, please change the data in the struct:
