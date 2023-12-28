@@ -426,7 +426,7 @@ for nodeNo = 1:1:nodeNum
                 Node(nodeNo).couplingNo = iElement;
             case 'interBearing'
                 % only write the interBearing No. of 1st column of interBearing
-                if indexElement(:,1) == 1 
+                if sum(isElementHere(:,1)) == 1 
                     Node(nodeNo).interBearingNo = iElement; 
                 else
                     iElement = iElement - 1;
@@ -456,7 +456,9 @@ end % end for
 if strcmp(elementName,'interBearing')
         index1Column = Element.positionOnShaftNode(:,1);
         index2Column = Element.positionOnShaftNode(:,2);
-        Node(index2Column).interBearingNo = Node(index1Column).interBearingNo;
+        for iInterBearing = 1:1:length(index1Column)
+            Node(index2Column(iInterBearing)).interBearingNo = Node(index1Column(iInterBearing)).interBearingNo;
+        end
 end % end if
 
 end % end subfunction matchElement()

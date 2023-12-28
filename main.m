@@ -23,7 +23,7 @@ Parameter = establishModel(InitialParameter,...
 save('modelParameter','Parameter')                       
 %%  Generate the dynamic equation
 
-generateDynamicEquation(Parameter);                      
+generateDynamicEquation(Parameter);                  
  
 %% Calculate response
 

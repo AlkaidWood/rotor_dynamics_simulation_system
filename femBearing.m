@@ -103,7 +103,7 @@ end % end if ~isempty(normalBearingIndex)
 % mass bearing
 if ~isempty(massBearingIndex)
     MassBearing    = getStructPiece(Temporary,massBearingIndex,[]);
-    massBearingNum = length(MassBearing.stiffness);
+    massBearingNum = size(MassBearing.stiffness,1);
     MeM = cell(massBearingNum,1);
     KeM = cell(massBearingNum,1); 
     CeM = cell(massBearingNum,1);

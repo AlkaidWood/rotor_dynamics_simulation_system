@@ -14,6 +14,29 @@
 % c: damping of intermediate bearing
 
 function [Ke, Ce] = bearingElementInter(ABearing)
+%%
+% check input stiffness and damping
+ABearing.stiffness(find(ABearing.stiffness==0)) = [];
+ABearing.damping(find(ABearing.damping==0)) = [];
+if isempty(ABearing.stiffness)
+    ABearing.stiffness = 0;
+else
+    % check length
+    if length(ABearing.stiffness) ~= 1
+        error('too much input stiffness for bearing without mass')
+    end
+end
+
+if isempty(ABearing.damping)
+    ABearing.damping = 0;
+else
+    % check length
+    if length(ABearing.damping) ~= 1
+        error('too much input damping for bearing without mass')
+    end
+end
+
+%%
 
 % constants
 k = ABearing.stiffness;
