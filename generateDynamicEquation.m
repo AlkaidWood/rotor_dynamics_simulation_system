@@ -196,7 +196,10 @@ dofInterval = Parameter.Mesh.dofInterval;
 
 shaftDof = zeros(shaftNum,2);
 for iShaft = 1:1:shaftNum
-    IShaftNode = Node( [Node.onShaftNo] == iShaft & [Node.isBearing] == false );
+    iShaftCell = repmat({iShaft}, 1, length(Node));
+    isShaftHere = cellfun(@ismember, iShaftCell, {Node.onShaftNo});
+    isBearingHere = [Node.isBearing] == false;
+    IShaftNode = Node( isShaftHere & isBearingHere );
     startNode = min([IShaftNode.name]);
     endNode = max([IShaftNode.name]);
     shaftDof(iShaft,:) = [dofInterval(startNode,1), dofInterval(endNode,2)];
@@ -243,6 +246,12 @@ processQ = {...
 
 processQ = cell2string(processQ);
 fprintf(dq,'%s\n', processQ);
+
+
+%%
+
+% Hertzian contact force
+% hasHertzian
 
 %%
 

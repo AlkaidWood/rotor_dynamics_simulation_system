@@ -93,7 +93,7 @@ end
 KInterBearing = zeros( length(MDisk) );
 CInterBearing = zeros( length(MDisk) );
 if Parameter.ComponentSwitch.hasIntermediateBearing
-    [KInterBearing, CInterBearing] = femInterBearing( ...
+    [MInterBearing, KInterBearing, CInterBearing] = femInterBearing( ...
             Parameter.IntermediateBearing, [Parameter.Mesh.Node.dof] );
 end
 
@@ -119,7 +119,7 @@ CShaft = rayleighCoeff(1) * (MShaft+MDisk) + rayleighCoeff(2) * KShaft;
 
 
 % assemble
-M = MShaft + MDisk + MBearing;
+M = MShaft + MDisk + MBearing + MInterBearing;
 K = KShaft +         KBearing + KInterBearing;
 G = GShaft + GDisk;
 N = NShaft + NDisk;

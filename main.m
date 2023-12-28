@@ -4,7 +4,7 @@ close all
 
 %% Input initial parameters
 
-InitialParameter = inputEssentialParameter();
+InitialParameter = inputEssentialParameter(); % first, input essential parameters
 InitialParameter = inputBearingHertz(InitialParameter);
 InitialParameter = inputIntermediateBearingHertz(InitialParameter);
 
@@ -22,16 +22,16 @@ Parameter = establishModel(InitialParameter,...
                            'isPlotMesh',   true);
 save('modelParameter','Parameter')                       
 %%  Generate the dynamic equation
-
+fclose('all');
 generateDynamicEquation(Parameter);                  
  
 %% Calculate response
 
 TSTART = 0;
 TEND = 1;
-SAMPLINGFREQUENCY = 105000;
+SAMPLINGFREQUENCY = 155000;
 ISPLOTSTATUS = true;
-REDUCEINTERVAL = 1;
+REDUCEINTERVAL = 50;
 tic
 [q, dq, t, convergenceStr] = calculateResponse(Parameter, [TSTART, TEND], SAMPLINGFREQUENCY,ISPLOTSTATUS,REDUCEINTERVAL);
 toc
@@ -50,7 +50,7 @@ SwitchFigure.displacement       = true;
 SwitchFigure.axisTrajectory     = true;
 SwitchFigure.axisTrajectory3d   = false;
 SwitchFigure.phase              = false;
-SwitchFigure.fftSteady          = true;
+SwitchFigure.fftSteady          = false;
 SwitchFigure.fftTransient       = false;
 SwitchFigure.poincare           = false;
 SwitchFigure.saveFig            = true;

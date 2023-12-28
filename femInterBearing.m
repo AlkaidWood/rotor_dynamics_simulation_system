@@ -12,7 +12,7 @@
 % K, C are stiffness, damping matrix of intermediate bearings. (n*n,
 % n is the number of all nodes)
 
-function  [K, C] = femInterBearing( InterBearing, nodeDof )
+function  [M, K, C] = femInterBearing( InterBearing, nodeDof )
 
 % generate global matrices
 dofNum = sum(nodeDof);

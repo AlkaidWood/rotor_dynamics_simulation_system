@@ -36,16 +36,16 @@ N = Parameter.Matrix.matrixN;
 Q = Parameter.Matrix.unblanceForce;
 K = Parameter.Matrix.stiffness;
 C = Parameter.Matrix.damping;
-G(1:28, 1:28) = domega(1)*G(1:28, 1:28);
-N(1:28, 1:28) = ddomega(1)*N(1:28, 1:28);
-G(29:48, 29:48) = domega(2)*G(29:48, 29:48);
-N(29:48, 29:48) = ddomega(2)*N(29:48, 29:48);
+G(1:40, 1:40) = domega(1)*G(1:40, 1:40);
+N(1:40, 1:40) = ddomega(1)*N(1:40, 1:40);
+G(41:76, 41:76) = domega(2)*G(41:76, 41:76);
+N(41:76, 41:76) = ddomega(2)*N(41:76, 41:76);
  
  
 % calculate unblance force
 diskInShaftNo = [1  1  2  2];
-Q([9  17  33  37])   = [5.4887e-05  5.4887e-05  5.7169e-05  5.7169e-05] .* ( ddomega(diskInShaftNo) .* sin(omega(diskInShaftNo)) + domega(diskInShaftNo).^2 .* cos(omega(diskInShaftNo)));
-Q([10  18  34  38]) = [5.4887e-05  5.4887e-05  5.7169e-05  5.7169e-05] .* (-ddomega(diskInShaftNo) .* cos(omega(diskInShaftNo)) + domega(diskInShaftNo).^2 .* sin(omega(diskInShaftNo)));
+Q([9  29  53  61])   = [5.4887e-05  5.4887e-05  5.7169e-05  5.7169e-05] .* ( ddomega(diskInShaftNo) .* sin(omega(diskInShaftNo)) + domega(diskInShaftNo).^2 .* cos(omega(diskInShaftNo)));
+Q([10  30  54  62]) = [5.4887e-05  5.4887e-05  5.7169e-05  5.7169e-05] .* (-ddomega(diskInShaftNo) .* cos(omega(diskInShaftNo)) + domega(diskInShaftNo).^2 .* sin(omega(diskInShaftNo)));
  
  
 % total force 
