@@ -51,7 +51,7 @@ Disk.radius             = [0.1215*ones(1,2), 0.124*ones(1,2)]'; % m
 Disk.thickness          = [0.015*ones(1,4)]'; % m
 Disk.positionOnShaftDistance = 1e-3 * [230.5, 664.5, 120.5, 225.5]'; %from left end (m)
 Disk.density            = [7890*ones(1,4)]'; % kg/m^3
-Disk.eccentricity       = [1e-5*ones(1,4)]'; % m
+Disk.eccentricity       = [1e-3*ones(1,4)]'; % m
 
 % check input
 checkInputData(Disk)

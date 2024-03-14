@@ -24,7 +24,7 @@
 % f = [fx; fy]: is a 2*1 vector representing the Herzian force in the x,y
 % dirctions
 
-function f = herzianForceEq(tn, x, y, omegai, omegao, nb, ri, ro, delta0, kHertz, n)
+function f = hertzianForceEq(tn, x, y, omegai, omegao, nb, ri, ro, delta0, kHertz, n)
 
 omegac = (omegao*ro + omegai*ri) / (ro + ri); % rotation velosity of the cage
 c1 = 2*pi/nb;

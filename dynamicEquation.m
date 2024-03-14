@@ -44,12 +44,16 @@ N(41:76, 41:76) = ddomega(2)*N(41:76, 41:76);
  
 % calculate unblance force
 diskInShaftNo = [1  1  2  2];
-Q([9  29  53  61])   = [5.4887e-05  5.4887e-05  5.7169e-05  5.7169e-05] .* ( ddomega(diskInShaftNo) .* sin(omega(diskInShaftNo)) + domega(diskInShaftNo).^2 .* cos(omega(diskInShaftNo)));
-Q([10  30  54  62]) = [5.4887e-05  5.4887e-05  5.7169e-05  5.7169e-05] .* (-ddomega(diskInShaftNo) .* cos(omega(diskInShaftNo)) + domega(diskInShaftNo).^2 .* sin(omega(diskInShaftNo)));
+Q([9  29  53  61])   = [0.0054887   0.0054887   0.0057169   0.0057169] .* ( ddomega(diskInShaftNo) .* sin(omega(diskInShaftNo)) + domega(diskInShaftNo).^2 .* cos(omega(diskInShaftNo)));
+Q([10  30  54  62]) = [0.0054887   0.0054887   0.0057169   0.0057169] .* (-ddomega(diskInShaftNo) .* cos(omega(diskInShaftNo)) + domega(diskInShaftNo).^2 .* sin(omega(diskInShaftNo)));
+ 
+ 
+% calculate Hertzian force
+fHertz = hertzianForce(yn, tn, domega);
  
  
 % total force 
-F = Q;
+F = Q + fHertz;
  
  
 % dynamic equation 

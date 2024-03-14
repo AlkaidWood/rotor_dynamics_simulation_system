@@ -69,6 +69,7 @@ IntermediateBearing.mass            =  [3, 0, 0;...
 IntermediateBearing.rollerNum        = [8;0;0;8];
 IntermediateBearing.radiusInnerRace = [28.8e-3;0;0;28.8e-3]; % m
 IntermediateBearing.radiusOuterRace = [47e-3;0;0;47e-3]; % m
+IntermediateBearing.innerShaftNo = [1; 1; 1; 1]; % indicates Inner shaft No. 
 IntermediateBearing.clearance = [10e-6;0;0;10e-6]; % m
 IntermediateBearing.contactStiffness = [1.08e10;0;0;1.08e10]; % N*m^-3/2
 IntermediateBearing.coefficient = [3/2;0;0;3/2]; % =3/2 in a ball bearing; = 10/9 in a roller bearing

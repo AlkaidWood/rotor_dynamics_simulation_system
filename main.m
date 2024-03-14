@@ -44,32 +44,32 @@ end
 
 %% Post Proccessing
 
-% signalProccessing
-tSpan = [0 1];
-SwitchFigure.displacement       = true;
-SwitchFigure.axisTrajectory     = true;
-SwitchFigure.axisTrajectory3d   = false;
-SwitchFigure.phase              = false;
-SwitchFigure.fftSteady          = false;
-SwitchFigure.fftTransient       = false;
-SwitchFigure.poincare           = false;
-SwitchFigure.saveFig            = true;
-
-signalProcessing(q, dq, t,...
-                 Parameter, SwitchFigure, tSpan, SAMPLINGFREQUENCY,...
-                 'reduceInterval', REDUCEINTERVAL,...
-                 'fftTimeInterval', 0.5,...
-                 'fftisPlot3DTransient', false,...
-                 'fftSuperpositionRatio', 0.5,...
-                 'fftXlim', 400,...
-                 'isPlotInA4', true,...
-                 'fftSteadyLog', true)
+% % signalProccessing
+% tSpan = [7 8];
+% SwitchFigure.displacement       = true;
+% SwitchFigure.axisTrajectory     = true;
+% SwitchFigure.axisTrajectory3d   = false;
+% SwitchFigure.phase              = true;
+% SwitchFigure.fftSteady          = true;
+% SwitchFigure.fftTransient       = false;
+% SwitchFigure.poincare           = true;
+% SwitchFigure.saveFig            = true;
+% 
+% signalProcessing(q, dq, t,...
+%                  Parameter, SwitchFigure, tSpan, SAMPLINGFREQUENCY,...
+%                  'reduceInterval', REDUCEINTERVAL,...
+%                  'fftTimeInterval', 0.5,...
+%                  'fftisPlot3DTransient', false,...
+%                  'fftSuperpositionRatio', 0.5,...
+%                  'fftXlim', 400,...
+%                  'isPlotInA4', true,...
+%                  'fftSteadyLog', true)
 
 
 %% Real-time monitor
 
 % plot part of response
-close all
+% close all
 % dofNo = 2;
 % 
 % figure
