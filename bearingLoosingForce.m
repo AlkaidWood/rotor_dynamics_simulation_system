@@ -13,7 +13,7 @@
 function [K, C] = bearingLoosingForce(qn, Matrix)
  
  
-if qn(66) >= 0 && qn(66) <= 0.0005
+if qn(92) >= 0 && qn(92) <= 0.0001
     K = Matrix.stiffnessLoosing;
     C = Matrix.dampingLoosing;
 else

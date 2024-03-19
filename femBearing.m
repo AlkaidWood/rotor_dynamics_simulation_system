@@ -52,6 +52,7 @@ normalBearingIndex = find(bearingMassSum == 0);
 massBearingIndex   = find(bearingMassSum ~= 0);
 Temporary          = rmfield(Bearing,'amount');
 
+
 %% 
 
 % normal bearing (no mass)
@@ -139,39 +140,45 @@ end % if ~isempty(massBearingIndex)
 % loosing bearing
 if ~isempty(LoosingBearing)
     MassBearing    = getStructPiece(Temporary,massBearingIndex,[]);
-    massBearingNum = length(MassBearing.stiffness);
-    [~,loosingIndex,~] = intersect(massBearingIndex, LoosingBearing.inBearingNo);
+    massBearingNum = size(MassBearing.stiffness,1);
     KeM = cell(massBearingNum,1); 
     CeM = cell(massBearingNum,1);
     
-    
     % generat mass bearing elements
     for iMBearing = 1:1:massBearingNum
+        % get the Bearing No.
+        thisNo = massBearingIndex(iMBearing);
+        % find the Lossing Bearing here
+        thisLoosingIndex = find(LoosingBearing.inBearingNo==thisNo);
         % get the information of ith mass braring
         AMBearing = getStructPiece(MassBearing,iMBearing,[]); % a normal bearing
         AMBearing.dofOnShaftNode = nodeDof(AMBearing.positionOnShaftNode);
-        if iMBearing == loosingIndex
-            AMBearing.loosingStiffness = LoosingBearing.loosingStiffness;
-            AMBearing.loosingDamping = LoosingBearing.loosingDamping;
-            [KeM{iMBearing}, CeM{iMBearing}] = bearingElementLoose(AMBearing); 
-        else
-            [~, KeM{iMBearing}, CeM{iMBearing}] = bearingElementMass(AMBearing); 
+        % change stiffness and damping for lossing bearing
+        if ~isempty(thisLoosingIndex)
+            for iLoosingKC = 1:1:length(thisLoosingIndex)
+                kLoose = LoosingBearing.loosingStiffness(thisLoosingIndex);
+                cLoose = LoosingBearing.loosingDamping(thisLoosingIndex);
+                looseNo = LoosingBearing.loosingPositionNo(thisLoosingIndex);
+                AMBearing.stiffness(looseNo) = kLoose;
+                AMBearing.damping(looseNo) = cLoose;
+            end
         end
-        
-    end
+        % generate elements (MeN: Me for mass bearing)
+        [~, KeM{iMBearing}, CeM{iMBearing}]= bearingElementMass(AMBearing);
+    end % end for iMBearing
     
     
     % find the index of element in global matrix
-    position = [MassBearing.positionOnShaftNode, MassBearing.positionNode];
+    position = [MassBearing.positionOnShaftNode, MassBearing.positionNode(:,1)];
     mBearingIndex = findIndex(position,nodeDof); 
-    
     
     % put the mass bearing elements into global matrix
     for iMBearing = 1:1:massBearingNum
         KLoose = repeatAdd(KLoose, KeM, iMBearing, mBearingIndex);
         CLoose = repeatAdd(CLoose, CeM, iMBearing, mBearingIndex);
-    end    
-end
+    end % end for
+
+end % end if 
 
 
 %%

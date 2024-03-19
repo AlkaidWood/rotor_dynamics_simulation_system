@@ -292,7 +292,7 @@ end
 if hasLoosingBearing
     loosingBearingIndex = LoosingBearing.inBearingNo;
     loosingNode = Bearing.positionOnShaftNode(loosingBearingIndex);
-    Node(loosingNode).isLoosingBearing = deal(true);
+    [Node(loosingNode).isLoosingBearing] = deal(true);
     for iNode = 1:1:nodeNum
         if isempty(Node(iNode).isLoosingBearing)
             Node(iNode).isLoosingBearing = false;

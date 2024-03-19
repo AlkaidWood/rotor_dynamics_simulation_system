@@ -15,11 +15,16 @@
 %%
 function OutputParameter = inputLoosingBearing(InputParameter)
 
-LoosingBearing.amount = 1; % up to now, this program support amount = 1;
-LoosingBearing.inBearingNo = 1; 
-LoosingBearing.interval = 5e-4; % m
-LoosingBearing.loosingStiffness = 0.1e7; % N*m
-LoosingBearing.loosingDamping =  400; % N*s/m
+LoosingBearing.amount = 1; % up to now, this program only support to simulate 1 loosing fault; amount = 1
+% inbearingNo corresponding to the row index of the Parameter.Bearing.xxx after establishModel()
+LoosingBearing.inBearingNo = [6]; 
+LoosingBearing.interval = [1e-4]; % m
+LoosingBearing.loosingStiffness = [1.5e7]; % N*m
+LoosingBearing.loosingDamping = [100]; % N*s/m
+
+% the model of bearing element:
+% shaft--k1c1--m1--k2c2--m2--k3c3--m3--k4c4- ...-mn--k(n+1)c(n+1)--basement;
+LoosingBearing.loosingPositionNo = [2]; % indicates the k,c no. which is loosing (e.g., loosing k1,c1 -> 1 or loosing k2,c2 -> 2)
 
 
 checkInputData(LoosingBearing);

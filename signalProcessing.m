@@ -139,7 +139,7 @@ if SwitchFigure.displacement
         %title(figureName,'Fontname', 'Arial');
         figurePath = ['signalProcess/displacement/', figureIdentity{iDof}];
         isVisible = true;
-        saveFigure(h, figurePath, SwitchFigure.saveFig, isVisible);
+        saveFigure(h, figurePath, SwitchFigure.saveFig, isVisible, SwitchFigure.saveEps);
         close(h)
     end
 end
@@ -180,7 +180,7 @@ if SwitchFigure.axisTrajectory
         %title(figureName, 'Fontname', 'Arial');
         figurePath = ['signalProcess/axisTrajectory/',['Node-',num2str(iNode)]];
         isVisible = true;
-        saveFigure(h, figurePath, SwitchFigure.saveFig, isVisible);
+        saveFigure(h, figurePath, SwitchFigure.saveFig, isVisible, SwitchFigure.saveEps);
         close
     end 
 end
@@ -216,7 +216,7 @@ if SwitchFigure.phase
         %title(figureName,'Fontname', 'Arial');
         figurePath = ['signalProcess/phase/',figureIdentity{iDof}];
         isVisible = true;
-        saveFigure(h, figurePath, SwitchFigure.saveFig, isVisible);
+        saveFigure(h, figurePath, SwitchFigure.saveFig, isVisible, SwitchFigure.saveEps);
         close
     end 
 end
@@ -256,7 +256,7 @@ if SwitchFigure.fftSteady
         % save figure
         figurePath = ['signalProcess/fftSteady/',figureIdentity{iDof}];
         isVisible = true;
-        saveFigure(h, figurePath, SwitchFigure.saveFig, isVisible);
+        saveFigure(h, figurePath, SwitchFigure.saveFig, isVisible, SwitchFigure.saveEps);
         close(h)
     end
 end
@@ -355,7 +355,7 @@ if SwitchFigure.fftTransient
         % save figure
         figurePath = ['signalProcess/fftTransient/',figureIdentity{iDof}];
         isVisible = true;
-        saveFigure(h, figurePath, SwitchFigure.saveFig, isVisible);
+        saveFigure(h, figurePath, SwitchFigure.saveFig, isVisible, SwitchFigure.saveEps);
         close
     end % end for iDof
 end % end if
@@ -437,7 +437,7 @@ if SwitchFigure.poincare
         % save figure
         figurePath = ['signalProcess/poincare/',figureIdentity{iDof}];
         isVisible = true;
-        saveFigure(h, figurePath, SwitchFigure.saveFig, isVisible);
+        saveFigure(h, figurePath, SwitchFigure.saveFig, isVisible, SwitchFigure.saveEps);
         close
     end
 end
@@ -499,7 +499,7 @@ if SwitchFigure.axisTrajectory3d
         legend off
         figurePath = ['signalProcess/axisTrajectory3d/',['Shaft-',num2str(iShaft)]];
         isVisible = true;
-        saveFigure(h, figurePath, SwitchFigure.saveFig, isVisible);
+        saveFigure(h, figurePath, SwitchFigure.saveFig, isVisible, SwitchFigure.saveEps);
         close
         
         nodeStart = nodeEnd + 1;
@@ -520,7 +520,7 @@ hasFolderSubFun = exist(pathName,'dir');
 end
 
 % sub function 2
-function saveFigure(figHandle, figureName, isSaveFig, isVisible)
+function saveFigure(figHandle, figureName, isSaveFig, isVisible, isSaveEps)
 if isSaveFig
     if isVisible
         set(gcf,'Visible','off','CreateFcn','set(gcf,''Visible'',''on'')')
@@ -529,10 +529,14 @@ if isSaveFig
     savefig(figHandle,figName,'compact')
 end
 
+if isSaveEps
+    epsName = [figureName, '.eps'];
+    print(figHandle, epsName, '-depsc2');
+end
+
 pngName = [figureName, '.png'];
 print(figHandle, pngName, '-dpng', '-r400');
-epsName = [figureName, '.eps'];
-print(figHandle, epsName, '-depsc2');
+
 %saveas(figHandle, pngName) 
 end % end subFunciton
 

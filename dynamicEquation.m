@@ -34,8 +34,6 @@ M = Parameter.Matrix.mass;
 G = Parameter.Matrix.gyroscopic;
 N = Parameter.Matrix.matrixN;
 Q = Parameter.Matrix.unblanceForce;
-K = Parameter.Matrix.stiffness;
-C = Parameter.Matrix.damping;
 G(1:40, 1:40) = domega(1)*G(1:40, 1:40);
 N(1:40, 1:40) = ddomega(1)*N(1:40, 1:40);
 G(41:76, 41:76) = domega(2)*G(41:76, 41:76);
@@ -50,6 +48,10 @@ Q([10  30  54  62]) = [0.0054887   0.0054887   0.0057169   0.0057169] .* (-ddome
  
 % calculate Hertzian force
 fHertz = hertzianForce(yn, tn, domega);
+ 
+ 
+% check the loosing bearing. If bearing loose, create the KLoose, CLoose.
+[K, C] = bearingLoosingForce(yn, Parameter.Matrix);
  
  
 % total force 

@@ -7,6 +7,7 @@ close all
 InitialParameter = inputEssentialParameter(); % first, input essential parameters
 InitialParameter = inputBearingHertz(InitialParameter);
 InitialParameter = inputIntermediateBearing(InitialParameter);
+InitialParameter = inputLoosingBearing(InitialParameter);
 
 
 % If you need change some parameters, please change the data in the struct:
@@ -44,26 +45,27 @@ end
 
 %% Post Proccessing
 
-% % signalProccessing
-% tSpan = [7 8];
-% SwitchFigure.displacement       = true;
-% SwitchFigure.axisTrajectory     = true;
-% SwitchFigure.axisTrajectory3d   = false;
-% SwitchFigure.phase              = true;
-% SwitchFigure.fftSteady          = true;
-% SwitchFigure.fftTransient       = false;
-% SwitchFigure.poincare           = true;
-% SwitchFigure.saveFig            = true;
-% 
-% signalProcessing(q, dq, t,...
-%                  Parameter, SwitchFigure, tSpan, SAMPLINGFREQUENCY,...
-%                  'reduceInterval', REDUCEINTERVAL,...
-%                  'fftTimeInterval', 0.5,...
-%                  'fftisPlot3DTransient', false,...
-%                  'fftSuperpositionRatio', 0.5,...
-%                  'fftXlim', 400,...
-%                  'isPlotInA4', true,...
-%                  'fftSteadyLog', true)
+% signalProccessing
+tSpan = [0 1];
+SwitchFigure.displacement       = true;
+SwitchFigure.axisTrajectory     = false;
+SwitchFigure.axisTrajectory3d   = false;
+SwitchFigure.phase              = false;
+SwitchFigure.fftSteady          = true;
+SwitchFigure.fftTransient       = false;
+SwitchFigure.poincare           = false;
+SwitchFigure.saveFig            = false;
+SwitchFigure.saveEps            = false;
+
+signalProcessing(q, dq, t,...
+                 Parameter, SwitchFigure, tSpan, SAMPLINGFREQUENCY,...
+                 'reduceInterval', REDUCEINTERVAL,...
+                 'fftTimeInterval', 0.5,...
+                 'fftisPlot3DTransient', false,...
+                 'fftSuperpositionRatio', 0.5,...
+                 'fftXlim', 400,...
+                 'isPlotInA4', true,...
+                 'fftSteadyLog', true)
 
 
 %% Real-time monitor
