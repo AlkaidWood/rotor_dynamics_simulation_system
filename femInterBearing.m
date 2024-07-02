@@ -89,8 +89,6 @@ if ~isempty(massBearingIndex)
         [MeM{iMBearing}, KeM{iMBearing}, CeM{iMBearing}]...
                                            = bearingElementInterMass(AMBearing); 
     end
-end
-
     % assembly mass matrix
     positionM = MassBearing.positionNode(:,1); % find index of element in global matrix
     mBearingIndexM = findIndex(positionM, nodeDof);
@@ -122,8 +120,7 @@ end
         K = repeatAdd2(K, KeM, iMBearing, mBearingIndex);
         C = repeatAdd2(C, CeM, iMBearing, mBearingIndex);
     end
-    
-
+end
 
 %%
 % sub function 1
